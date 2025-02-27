@@ -53,27 +53,28 @@ if (isset($segments[0]) && $segments[0] === 'users') {
   } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = file_get_contents("php://input");
     $data = json_decode($data, true);
-    if (isset($data["username"]) and isset($data["email"]) and isset($data["phone_number"])) {
+    if (!isset($data["username"]) or !isset($data["email"]) or !isset($data["phone_number"])) {
       http_response_code(400);
       echo json_encode(
         [
           "message" => "please, fill username, email and phone_number!"
         ]
       );
+    } else {
+      $lastUser = end($users);
+      $newId = isset($lastUser['id']) ? $lastUser['id'] + 1 : 1;
+      $data['id'] = $newId;
+
+
+      $users[] = $data;
+      file_put_contents($userJson, json_encode($users));
+      http_response_code(201);
+      echo json_encode(
+        [
+          "message" => "add user successfully!"
+        ]
+      );
     }
-    $lastUser = end($users);
-    $newId = isset($lastUser['id']) ? $lastUser['id'] + 1 : 1;
-    $data['id'] = $newId;
-
-
-    $users[] = $data;
-    file_put_contents($userJson, json_encode($users));
-    http_response_code(201);
-    echo json_encode(
-      [
-        "message" => "add user successfully!"
-      ]
-    );
   } else {
     http_response_code(405);
     $error = array('error' => 'Method not allowed');
