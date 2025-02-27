@@ -45,7 +45,7 @@ if (isset($segments[0]) && $segments[0] === 'users') {
       if (!$notEmpty) {
         http_response_code(404);
         echo json_encode([
-          "error" => "user not found"
+          "message" => "user not found"
         ]);
       }
     } else {
@@ -81,7 +81,7 @@ if (isset($segments[0]) && $segments[0] === 'users') {
     $error = array('error' => 'Method not allowed');
     echo json_encode($error);
   }
-} else {
+} else if (isset($segments[0]) && $segments[0] === '') {
   header("Content-Type: text/html");
 ?>
   <!DOCTYPE html>

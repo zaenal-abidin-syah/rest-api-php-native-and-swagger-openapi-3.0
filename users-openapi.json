@@ -117,7 +117,7 @@
         ],
         "responses": {
           "200": {
-            "description": "success get all users",
+            "description": "success get user",
             "content": {
               "application/json": {
                 "schema": {
@@ -126,6 +126,29 @@
                 "examples": {
                   "success": {
                     "$ref": "#/components/examples/successGetUser"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "failed get users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "failed": {
+                    "description": "failed get user",
+                    "value": {
+                      "message": "user not found"
+                    }
                   }
                 }
               }
