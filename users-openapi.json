@@ -1,9 +1,244 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "API Title",
-    "version": "1.0"
+    "title": "API for Users",
+    "version": "1.0",
+    "description": "Api untuk aplikasi users",
+    "termsOfService": "https://github.com/zaenal-abidin-syah",
+    "contact": {
+      "name": "Zaenal Abidin Syah",
+      "email": "aszaenal618@gmail.com",
+      "url": "https://github.com/zaenal-abidin-syah"
+    },
+    "license": {
+      "name": "APACHE 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
   },
-  "servers": [{ "url": "https://api.server.test/v1" }],
-  "paths": {}
+  "servers": [
+    {
+      "url": "localhost:8000",
+      "description": "Users Restfull Api server"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get All Users",
+        "description": "Get All Users by default",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "success get all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArrayUsers"
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/successGetAllUsers"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create New Users",
+        "description": "Create New Users to database",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUsers"
+              },
+              "examples": {
+                "contoh1": {
+                  "$ref": "#/components/examples/contoh1"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success create Users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                },
+                "examples": {
+                  "contoh1": {
+                    "description": "Success Create Users",
+                    "value": {
+                      "message": "add user successfully"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Failed create Users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                },
+                "examples": {
+                  "contoh1": {
+                    "description": "Failed Create Users",
+                    "value": {
+                      "message": "please, fill username, email and phone_number!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{UserId}": {
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get User by User Id",
+        "description": "Get user by user id",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/UsersId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success get all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                },
+                "examples": {
+                  "success": {
+                    "$ref": "#/components/examples/successGetUser"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "UsersId": {
+        "name": "usersId",
+        "in": "path",
+        "required": true,
+        "description": "User id for get user",
+        "schema": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "examples": {
+          "contoh1": {
+            "description": "sample todolist for contoh1",
+            "value": "1"
+          },
+          "contoh2": {
+            "description": "sample todolist for contoh2",
+            "value": "2"
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Users": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "number_phone": {
+            "type": "string"
+          }
+        }
+      },
+      "ArrayUsers": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Users"
+        }
+      },
+      "CreateUsers": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "required": true,
+            "minLength": 4
+          },
+          "email": {
+            "type": "string",
+            "required": true,
+            "minLength": 4
+          },
+          "number_phone": {
+            "type": "string",
+            "required": true,
+            "minLength": 4
+          }
+        }
+      }
+    },
+    "examples": {
+      "successGetAllUsers": {
+        "description": "success get all users",
+        "value": [
+          {
+            "id": 99,
+            "username": "contoh1",
+            "email": "contoh1@email.com",
+            "phone_number": "083265545655"
+          },
+          {
+            "id": 100,
+            "username": "contoh2",
+            "email": "contoh2@email.com",
+            "phone_number": "083475348435"
+          }
+        ]
+      },
+      "successGetUser": {
+        "description": "success get all users",
+        "value": {
+          "id": 99,
+          "username": "contoh1",
+          "email": "contoh1@email.com",
+          "phone_number": "083265545655"
+        }
+      },
+      "contoh1": {
+        "description": "create users contoh1",
+        "value": {
+          "username": "username1",
+          "email": "username1@email.com",
+          "phone_number": "088946283732"
+        }
+      }
+    }
+  }
 }

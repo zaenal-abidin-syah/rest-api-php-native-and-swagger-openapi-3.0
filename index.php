@@ -55,16 +55,24 @@ if (isset($segments[0]) && $segments[0] === 'users') {
   } else if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = file_get_contents("php://input");
     $data = json_decode($data, true);
+    if (isset($data["username"]) and isset($data["email"]) and isset($data["phone_number"])) {
+      http_response_code(400);
+      echo json_encode(
+        [
+          "message" => "please, fill username, email and phone_number!"
+        ]
+      );
+    }
     $lastUser = end($users);
     $newId = isset($lastUser['id']) ? $lastUser['id'] + 1 : 1;
     $data['id'] = $newId;
+
 
     $users[] = $data;
     file_put_contents($userJson, json_encode($users));
     http_response_code(201);
     echo json_encode(
       [
-        "data" => $data,
         "message" => "add user successfully!"
       ]
     );
@@ -74,14 +82,39 @@ if (isset($segments[0]) && $segments[0] === 'users') {
     echo json_encode($error);
   }
 } else {
-  // Untuk request URL yang tidak sesuai, misalnya mengembalikan 404
-  http_response_code(404);
-  echo json_encode(['error' => 'Not Found']);
+  header("Content-Type: text/html");
+?>
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="SwaggerUI" />
+    <title>SwaggerUI</title>
+    <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css" />
+  </head>
+
+  <body>
+    <div id="swagger-ui"></div>
+    <script src="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js" crossorigin></script>
+    <script>
+      window.onload = () => {
+        window.ui = SwaggerUIBundle({
+          url: 'users-openapi.json',
+          dom_id: '#swagger-ui',
+        });
+      };
+    </script>
+  </body>
+
+  </html>
+<?php
 }
+?>
 
 
-
-
+<?php
 // untuk yang menggunakan Class
 // $requestUri = trim($_SERVER['REQUEST_URI'], '/');
 // $segments = explode('/', $requestUri);
@@ -114,3 +147,7 @@ if (isset($segments[0]) && $segments[0] === 'users') {
 //   http_response_code(404);
 //   echo json_encode(['error' => 'Not Found']);
 // }
+?>
+<?php
+
+?>
