@@ -26,8 +26,6 @@ $segments = explode('/', $requestUri);
 
 // Cek apakah URL diawali dengan "users"
 if (isset($segments[0]) && $segments[0] === 'users') {
-  require 'RestAPI.php';
-  $restApi = new RestAPI();
 
   // Mengambil ID jika tersedia (misalnya, /users/1)
   $id = isset($segments[1]) ? $segments[1] : null;
