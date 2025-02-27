@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "https://users-api.dom.my.id",
+      "url": "https://users-api.sgp.dom.my.id",
       "description": "Users Restfull Api server"
     }
   ],
