@@ -17,7 +17,7 @@
   },
   "servers": [
     {
-      "url": "localhost:8000",
+      "url": "https://users-api.dom.my.id",
       "description": "Users Restfull Api server"
     }
   ],
